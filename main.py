@@ -126,7 +126,8 @@ class Site(BaseHTTPRequestHandler):
 
         audio {{
             width: 100%;
-            height: 120px;
+            transfrom: caleY(2):
+            margin: 40px 0;
         }}
 
     </style>
