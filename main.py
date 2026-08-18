@@ -56,7 +56,7 @@ class Site(BaseHTTPRequestHandler):
 
                 <audio controls>
                     <source
-                        src="/music{number}.mp3"
+                        src="/music.mp3"
                         type="audio/mpeg"
                     >
                     مرورگر شما از پخش موزیک پشتیبانی نمی‌کند.
