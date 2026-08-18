@@ -2,7 +2,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
 
 
-MUSIC_COUNT = 6
+MUSIC_COUNT = 5
 
 
 class Site(BaseHTTPRequestHandler):
