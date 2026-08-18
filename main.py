@@ -6,79 +6,39 @@ class Site(BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-       
-        if self.path.startswith("/music"):
-            filename = self.path[1:]
+        
+        if self.path == "/music.mp3":
+            try:
+                with open("music.mp3", "rb") as file:
+                    music = file.read()
 
-             music1.mp3  music50.mp3
-            if (
-                filename.startswith("music")
-                and filename.endswith(".mp3")
-            ):
-                try:
-                    number = int(
-                        filename.replace("music", "").replace(".mp3", "")
-                    )
+                self.send_response(200)
+                self.send_header("Content-Type", "audio/mpeg")
+                self.send_header(
+                    "Content-Length",
+                    str(len(music))
+                )
+                self.end_headers()
 
-                    if number < 1 or number > 50:
-                        self.send_error(404)
-                        return
+                self.wfile.write(music)
 
-                    with open(filename, "rb") as file:
-                        music = file.read()
+            except FileNotFoundError:
+                self.send_error(404, "Music not found")
 
-                    self.send_response(200)
-                    self.send_header(
-                        "Content-Type",
-                        "audio/mpeg"
-                    )
-                    self.send_header(
-                        "Content-Length",
-                        str(len(music))
-                    )
-                    self.end_headers()
+            return
 
-                    self.wfile.write(music)
-
-                except (FileNotFoundError, ValueError):
-                    self.send_error(404, "Music not found")
-
-                return
-
-  
-        music_list = ""
-
-        for number in range(1, 2):
-            music_list += f"""
-            <div class="music">
-
-                <h2>🎵 موزیک {number}</h2>
-
-                <audio controls>
-                    <source
-                        src="/music.mp3"
-                        type="audio/mpeg"
-                    >
-                    مرورگر شما از پخش موزیک پشتیبانی نمی‌کند.
-                </audio>
-
-            </div>
-            """
-
-
-        html = f"""<!DOCTYPE html>
-
+        
+        html = """<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
 <head>
-
     <meta charset="UTF-8">
 
     <title>TASDIGHI MUSIC</title>
 
     <style>
 
-        body {{
+        body {
             margin: 0;
             padding: 40px 20px;
 
@@ -88,47 +48,45 @@ class Site(BaseHTTPRequestHandler):
 
             background-color: #111;
             color: white;
-        }}
+        }
 
-        .title {{
+        .title {
             font-size: 65px;
             margin-bottom: 35px;
-        }}
+        }
 
-        .telegram {{
+        .telegram {
             display: block;
 
             font-size: 40px;
 
             color: white;
-
             text-decoration: none;
 
-            margin-bottom: 80px;
-        }}
+            margin-bottom: 70px;
+        }
 
-        .music {{
+        .music {
             max-width: 1000px;
 
-            margin: 0 auto 50px auto;
+            margin: 0 auto;
 
             padding: 35px;
 
             background-color: #222;
 
             border-radius: 25px;
-        }}
+        }
 
-        .music h2 {{
+        .music h2 {
             font-size: 40px;
-
             margin-bottom: 30px;
-        }}
+        }
 
-        audio {{
+        audio {
             width: 100%;
             height: 100px;
-        }}
+        }
 
     </style>
 
@@ -148,12 +106,27 @@ class Site(BaseHTTPRequestHandler):
         📢 ما را در کانال تلگرامی‌مان دنبال کنید 📢
     </a>
 
-    {music_list}
+    <div class="music">
+
+        <h2>
+            🎵 موزیک
+        </h2>
+
+        <audio controls>
+            <source
+                src="/music.mp3"
+                type="audio/mpeg"
+            >
+
+            مرورگر شما از پخش موزیک پشتیبانی نمی‌کند.
+
+        </audio>
+
+    </div>
 
 </body>
 
-</html>
-"""
+</html>"""
 
         self.send_response(200)
 
