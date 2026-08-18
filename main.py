@@ -2,14 +2,20 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
 
 
+MUSIC_COUNT = 10
+
+
 class Site(BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        
-        if self.path == "/music.mp3":
+       
+        if self.path.endswith(".mp3"):
+
+            filename = self.path[1:]
+
             try:
-                with open("music.mp3", "rb") as file:
+                with open(filename, "rb") as file:
                     music = file.read()
 
                 self.send_response(200)
@@ -28,19 +34,52 @@ class Site(BaseHTTPRequestHandler):
             return
 
         
-        html = """<!DOCTYPE html>
+        music_list = ""
+
+        for number in range(MUSIC_COUNT):
+
+            
+            if number == 0:
+                filename = "music.mp3"
+            else:
+                filename = f"music{number}.mp3"
+
+            music_list += f"""
+            <div class="music">
+
+                <h2>🎵 موزیک {number + 1}</h2>
+
+                <audio controls>
+                    <source
+                        src="/{filename}"
+                        type="audio/mpeg"
+                    >
+                    مرورگر شما از پخش موزیک پشتیبانی نمی‌کند.
+                </audio>
+
+            </div>
+            """
+
+        
+        html = f"""<!DOCTYPE html>
+
 <html lang="fa" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
 
     <title>AZERI 64</title>
 
     <style>
 
-        body {
+        * {{
+            box-sizing: border-box;
+        }}
+
+        body {{
             margin: 0;
-            padding: 40px 20px;
+            padding: 50px 20px;
 
             text-align: center;
 
@@ -48,45 +87,47 @@ class Site(BaseHTTPRequestHandler):
 
             background-color: #111;
             color: white;
-        }
+        }}
 
-        .title {
-            font-size: 65px;
+        .title {{
+            font-size: 70px;
             margin-bottom: 35px;
-        }
+        }}
 
-        .telegram {
+        .telegram {{
             display: block;
 
-            font-size: 40px;
+            font-size: 45px;
+            font-weight: bold;
 
             color: white;
             text-decoration: none;
 
-            margin-bottom: 70px;
-        }
+            margin-bottom: 80px;
+        }}
 
-        .music {
-            max-width: 1000px;
+        .music {{
+            width: 98%;
+            max-width: 1400px;
 
-            margin: 0 auto;
+            margin: 0 auto 60px auto;
 
-            padding: 35px;
+            padding: 45px 50px;
 
             background-color: #222;
 
-            border-radius: 25px;
-        }
+            border-radius: 30px;
+        }}
 
-        .music h2 {
-            font-size: 40px;
-            margin-bottom: 30px;
-        }
+        .music h2 {{
+            font-size: 45px;
+            margin: 0 0 35px 0;
+        }}
 
-        audio {
+        audio {{
             width: 100%;
-            height: 100px;
-        }
+            height: 120px;
+        }}
 
     </style>
 
@@ -106,23 +147,7 @@ class Site(BaseHTTPRequestHandler):
         📢 ما را در کانال تلگرامی‌مان دنبال کنید 📢
     </a>
 
-    <div class="music">
-
-        <h2>
-            🎵 موزیک
-        </h2>
-
-        <audio controls>
-            <source
-                src="/music.mp3"
-                type="audio/mpeg"
-            >
-
-            مرورگر شما از پخش موزیک پشتیبانی نمی‌کند.
-
-        </audio>
-
-    </div>
+    {music_list}
 
 </body>
 
