@@ -34,7 +34,7 @@ class Site(BaseHTTPRequestHandler):
 <head>
     <meta charset="UTF-8">
 
-    <title>TASDIGHI MUSIC</title>
+    <title>AZERI 64</title>
 
     <style>
 
@@ -95,7 +95,7 @@ class Site(BaseHTTPRequestHandler):
 <body>
 
     <h1 class="title">
-        🎵 TASDIGHI MUSIC 🎵
+        🎵 اهنگ شاد اذری 🎵
     </h1>
 
     <a
